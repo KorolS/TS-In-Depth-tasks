@@ -50,11 +50,11 @@ const favoriteLibrarian: Librarian = new UL.UniversityLibrarian();
 favoriteLibrarian.name = 'Anna';
 favoriteLibrarian.assistCustomer("Tom");
 
-const refBook = new RefBook(1, "New", 2021, 1);
+//const refBook = new RefBook(1, "New", 2021, 1);
 //console.log(refBook);
 //refBook.printItem();
 //refBook.printCitation();
-functions.printRefBook(refBook);
+//functions.printRefBook(refBook);
 
 const universityLibrarian = new UL.UniversityLibrarian();
 //functions.printRefBook(universityLibrarian);
@@ -121,8 +121,8 @@ const offer: any = {
 // console.log(offer.book.getTitle?.());
 // console.log(offer.book.authors?.[0]);
 
-console.log(functions.getProperty(myBook, 'title'));
-console.log(functions.getProperty(myBook, 'markDamaged'));
+//console.log(functions.getProperty(myBook, 'title'));
+//console.log(functions.getProperty(myBook, 'markDamaged'));
 //console.log(getProperty(myBook, 'isbn'));
 
 const flag = true;
@@ -145,22 +145,22 @@ const inventory: Book[] = [
 
 // console.log(functions.purge([1, 2, 3]));
 
-const bookShelf = new Shelf<Book>()
-inventory.forEach(b => bookShelf.add(b));
-console.log(`First book ${bookShelf.getFirst().title}`);
+// const bookShelf = new Shelf<Book>()
+// inventory.forEach(b => bookShelf.add(b));
+//console.log(`First book ${bookShelf.getFirst().title}`);
 
-const magazines: Magazine[] = [
-    { title: 'Programming Language Monthly', publisher: 'Code Mags' },
-    { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
-    { title: 'Five Points', publisher: 'GSU' }
-];
+// const magazines: Magazine[] = [
+//     { title: 'Programming Language Monthly', publisher: 'Code Mags' },
+//     { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
+//     { title: 'Five Points', publisher: 'GSU' }
+// ];
 
-const magazineShelf = new Shelf<Magazine>()
-magazines.forEach(m => magazineShelf.add(m));
-console.log(`First magazine ${magazineShelf.getFirst().title}`);
-magazineShelf.printItems();
-console.log(magazineShelf.find('Five Points'));
-console.log(functions.getProperty<Book, 'title'>(functions.getAllBooks()[0], 'title'));
+// const magazineShelf = new Shelf<Magazine>()
+//magazines.forEach(m => magazineShelf.add(m));
+//console.log(`First magazine ${magazineShelf.getFirst().title}`);
+//magazineShelf.printItems();
+//console.log(magazineShelf.find('Five Points'));
+//console.log(functions.getProperty<Book, 'title'>(functions.getAllBooks()[0], 'title'));
 
 const requiredBook: BookRequiredFields = {
     author: 'Anna',
@@ -180,14 +180,48 @@ const params: Parameters<СreateCustomerFunctionType> = ['Anna'];
 functions.createCustomer(...params);
 
 const librarian = new UL.UniversityLibrarian();
-console.log(librarian);
+
 librarian.name = "Anna";
 //librarian['printLibrarian']();
 //librarian.assistFaculty = () => { };
 //librarian.teachCommunity = () => { };
 //console.log(librarian);
-
-//const encyclopedia = new Encyclopedia(1, 'some book', 2021, 10);
-//encyclopedia.printItem();
 librarian.assistCustomer("Tom");
+
+const encyclopedia = new Encyclopedia(1, 'some book', 2021, 10, 5);
+//encyclopedia.printItem();
+//encyclopedia.copies = 4.5;
+//console.log("Encyclopedia", encyclopedia);
+
+
+
+//console.log("Get Books start");
+// functions.getBooksByCategory(Category.JavaScript, functions.logCategorySearch);
+// functions.getBooksByCategory(Category.Software, functions.logCategorySearch)
+//console.log("Get Books end");
+
+//console.log("Get Books start promise");
+// functions.getBooksByCategoryPromise(Category.JavaScript)
+//     .then(titles => {
+//         console.log("Titles", titles);
+//         return titles.length
+//     }).then(
+//         amount => console.log(`Titles amount ${amount}`)
+//     )
+//     .catch(reason => console.log('Reason', reason));
+// functions.getBooksByCategoryPromise(Category.Software)
+//     .then(titles => {
+//         console.log("Titles", titles);
+//         return titles.length
+//     }).then(
+//         amount => console.log(`Titles amount ${amount}`)
+//     )
+//     .catch(reason => console.log('Reason', reason));
+// console.log("Get Books end promise");
+
+console.log("Log search start async");
+functions.logSearchResults(Category.JavaScript).catch(reason => console.log("Reason", reason));
+functions.logSearchResults(Category.Software).catch(reason => console.log("Reason", reason));
+console.log("Log search end async");
+
 

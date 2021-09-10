@@ -1,3 +1,5 @@
+import { makeProperty } from "./functions";
+
 export function sealed(param: string) {
     return function (constructor: Function): void {
         console.log(`Sealing the constructor ${param}`);
@@ -67,6 +69,23 @@ export function logMethod(target: Function | Object, methodName: string, descrip
             })
         }
         return method.apply(this, params);
+    }
+    return descriptor
+}
+
+export function format(pref: string = 'Mr./Mrs.') {
+    return function (target: any, propName: string) {
+        makeProperty(target, propName, value => `${pref} ${value}`, value => value);
+    }
+}
+
+export function positiveInteger(target: Function | Object, propName: string, descriptor: PropertyDescriptor): PropertyDescriptor {
+    const set = descriptor.set;
+    descriptor.set = function (value: number) {
+        if (value < 1 || !Number.isInteger(value)) {
+            throw new Error("Value should be positive integer")
+        }
+        set.call(this, value);
     }
     return descriptor
 }

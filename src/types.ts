@@ -1,3 +1,4 @@
+import { getBooksByCategoryPromise } from "./functions";
 import { Author, Book, Person } from "./interfaces";
 // type Book = {
 //     id: number,
@@ -21,5 +22,9 @@ type Param3<T> = T extends (param1: string, param2: number, param3: infer R) => 
 export type P1 = Param1<fn>;
 export type P2 = Param2<fn>
 export type P3 = Param3<fn>
+
+export type Unpromisify<T> = T extends Promise<infer R> ? R : never;
+export type PromiseReturnType = ReturnType<typeof getBooksByCategoryPromise>;
+export type UnpromisifyReturnType = Unpromisify<PromiseReturnType>;
 
 export { BookOrUndefined, BookProperties, PersonBook, BookRequiredFields, UpdateBook, AuthorWoEmail, СreateCustomerFunctionType, fn }

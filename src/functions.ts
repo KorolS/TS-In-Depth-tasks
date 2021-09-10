@@ -1,5 +1,5 @@
 import { Category } from "./enums";
-import { Book } from "./interfaces";
+import { Book, LibMgrCallback } from "./interfaces";
 import { BookProperties, BookOrUndefined } from "./types";
 import RefBook from "./classes/encyclopedia";
 
@@ -133,6 +133,85 @@ export function bookTitleTransform(title: any): string {
 
 export function purge<T>(inventory: T[]): T[] {
     return inventory.slice(2);
+}
+
+export function makeProperty<T>(
+    prototype: any,
+    propertyName: string,
+    getTransformer: (value: any) => T,
+    setTransformer: (value: any) => T
+) {
+    const values = new Map<any, T>();
+
+    Object.defineProperty(prototype, propertyName, {
+        set(firstValue: any) {
+            Object.defineProperty(this, propertyName, {
+                get() {
+                    if (getTransformer) {
+                        return getTransformer(values.get(this));
+                    } else {
+                        values.get(this);
+                    }
+                },
+                set(value: any) {
+                    if (setTransformer) {
+                        values.set(this, setTransformer(value));
+                    } else {
+                        values.set(this, value);
+                    }
+                },
+                enumerable: true
+            });
+            this[propertyName] = firstValue;
+        },
+        enumerable: true,
+        configurable: true
+    });
+}
+
+export function getBooksByCategory(category: Category, callback: LibMgrCallback): void {
+    setTimeout(() => {
+        try {
+            const titles = getBookTitleByCategory(category)
+            if (titles.length > 0) {
+                callback(null, titles)
+            }
+            else { throw new Error('No books found.') }
+        }
+        catch (err) {
+            callback(err, null)
+        }
+    }, 1000)
+
+}
+
+export function logCategorySearch(err: Error, titles: string[]): void {
+    if (err) {
+        console.log(`Error: ${err}`)
+    }
+    else {
+        console.log("Titles", titles);
+    }
+}
+
+export function getBooksByCategoryPromise(category: Category): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+        setTimeout(() => {
+            {
+                const titles = getBookTitleByCategory(category)
+                if (titles.length > 0) {
+                    resolve(titles)
+                }
+                else { reject('No books found.') }
+            }
+
+        }, 1000)
+    })
+}
+
+export async function logSearchResults(category: Category) {
+    const books = await getBooksByCategoryPromise(category);
+    console.log("Books amount", books.length);
 }
 
 
